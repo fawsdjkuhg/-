@@ -28,31 +28,35 @@ body {
 <div id="timer">00:00:00:00</div>
 
 <script>
+let now = new Date();
+let target = new Date(now);
+
+let days = (6 - now.getDay() + 7) % 7;
+
+target.setDate(now.getDate() + days);
+target.setHours(15, 0, 0, 0);
+
 function update() {
-    let now = new Date();
-    let target = new Date();
+    let current = new Date();
+    let time = target - current;
 
-    let days = (6 - now.getDay() + 7) % 7;
+    let negative = time < 0;
 
-    target.setDate(now.getDate() + days);
-    target.setHours(15, 0, 0, 0);
-
-    if (now >= target) {
-        target.setDate(target.getDate() + 7);
-    }
-
-    let time = target - now;
+    time = Math.abs(time);
 
     let d = Math.floor(time / 86400000);
     let h = Math.floor(time / 3600000) % 24;
     let m = Math.floor(time / 60000) % 60;
     let s = Math.floor(time / 1000) % 60;
 
-    document.getElementById("timer").textContent =
+    let result =
         String(d).padStart(2, "0") + ":" +
         String(h).padStart(2, "0") + ":" +
         String(m).padStart(2, "0") + ":" +
         String(s).padStart(2, "0");
+
+    document.getElementById("timer").textContent =
+        negative ? "-" + result : result;
 }
 
 update();
