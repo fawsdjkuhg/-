@@ -49,6 +49,10 @@ html, body {
 <div id="timer">00:00:00:00</div>
 
 <script>
+/* =========================
+   ТАЙМЕР
+   Ближайшая суббота 15:00
+========================= */
 
 const target = new Date();
 const current = new Date();
@@ -58,6 +62,11 @@ let daysUntilSaturday =
 
 target.setDate(current.getDate() + daysUntilSaturday);
 target.setHours(15, 0, 0, 0);
+
+
+/* Если сейчас суббота после 15:00 —
+   оставляем сегодняшнюю дату,
+   чтобы таймер продолжил считать в минус */
 
 function updateTimer() {
 
@@ -98,23 +107,47 @@ function updateTimer() {
 updateTimer();
 setInterval(updateTimer, 1000);
 
+
+/* =========================
+   СООБЩЕНИЯ
+========================= */
+
 const messages = [
-    "0JfQsNC80LAg0YLQtdC80L3QvtC1",
+
+    "0JfQsNC80LAg0YLQtdC80L3QvtC1INC/0L7QtNC+0LLQvdC40Y8=",
+
     "0KLQtdC60YIg0L7QstC+0YDQvtCy",
+
     "0J3QsNC/INCQ0YHQv9Cw",
+
     "0J7QutC+INCQ0YHQv9Cw0Y8=",
-    "0KLQtdC60YIg0Lgg0YLQtdC80L3QvtC1",
-    "0JrQotCeINCj0JbQlSDQndCQ0KfQkNCb",
+
+    "0KLQtdC60YIg0Lgg0YLQtdC80L3QvtC1INC90LXQu9Cw",
+
+    "0JrQotCeLdCi0J4g0KHQnNCe0KLQoNCY0KI=",
+
     "0JjQqdCYINCU0JDQm9Cs0KjQlQ==",
-    "0KHQm9CY0KjQmtCe0Jwg0J/QntCX0JTQ"
+
+    "0KHQm9CY0KjQmtCe0Jwg0J/QntCX0JTQndCe"
+
 ];
 
-function showMessage(text) {
 
-    const message = document.createElement("div");
+/* Показать случайное сообщение */
+
+function showMessage() {
+
+    const message =
+        document.createElement("div");
 
     message.className = "message";
-    message.textContent = text;
+
+    message.textContent =
+        messages[
+            Math.floor(
+                Math.random() * messages.length
+            )
+        ];
 
     message.style.left =
         (5 + Math.random() * 90) + "%";
@@ -129,43 +162,234 @@ function showMessage(text) {
     });
 
     setTimeout(() => {
+
         message.classList.remove("show");
 
         setTimeout(() => {
             message.remove();
         }, 300);
 
-    }, 1800 + Math.random() * 2500);
+    }, 1500 + Math.random() * 2500);
 }
 
 
-function startMessages() {
+/* Первое сообщение */
 
-    const shuffled = [...messages]
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 5);
+setTimeout(showMessage, 4000);
 
-    let index = 0;
 
-    function next() {
+/* Следующие сообщения */
 
-        if (index >= shuffled.length) {
-            
-            setTimeout(startMessages, 5000);
-            return;
-        }
+function nextMessage() {
 
-        showMessage(shuffled[index]);
+    showMessage();
 
-        index++;
-
-        const delay =
-            1200 + Math.random() * 5000;
-
-        setTimeout(next, delay);
-    }
-
-    next();
+    setTimeout(
+        nextMessage,
+        3000 + Math.random() * 7000
+    );
 }
 
-setTimeout(startMessages, 3000);
+setTimeout(nextMessage, 7000);
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>...</title>
+
+<style>
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+    font-family: monospace;
+}
+
+#timer {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(35px, 8vw, 80px);
+    text-shadow: 0 0 20px #fff;
+    z-index: 10;
+    white-space: nowrap;
+}
+
+.message {
+    position: fixed;
+    color: rgba(255,255,255,.7);
+    font-size: 14px;
+    letter-spacing: 3px;
+    opacity: 0;
+    pointer-events: none;
+    text-shadow: 0 0 8px #fff;
+    transition: opacity .2s;
+}
+
+.message.show {
+    opacity: 1;
+}
+</style>
+</head>
+
+<body>
+
+<div id="timer">00:00:00:00</div>
+
+<script>
+/* =========================
+   ТАЙМЕР
+   Ближайшая суббота 15:00
+========================= */
+
+const target = new Date();
+const current = new Date();
+
+let daysUntilSaturday =
+    (6 - current.getDay() + 7) % 7;
+
+target.setDate(current.getDate() + daysUntilSaturday);
+target.setHours(15, 0, 0, 0);
+
+
+/* Если сейчас суббота после 15:00 —
+   оставляем сегодняшнюю дату,
+   чтобы таймер продолжил считать в минус */
+
+function updateTimer() {
+
+    const now = new Date();
+
+    let difference = target.getTime() - now.getTime();
+
+    const negative = difference < 0;
+
+    difference = Math.abs(difference);
+
+    const days = Math.floor(
+        difference / 86400000
+    );
+
+    const hours = Math.floor(
+        difference / 3600000
+    ) % 24;
+
+    const minutes = Math.floor(
+        difference / 60000
+    ) % 60;
+
+    const seconds = Math.floor(
+        difference / 1000
+    ) % 60;
+
+    const result =
+        String(days).padStart(2, "0") + ":" +
+        String(hours).padStart(2, "0") + ":" +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
+
+    document.getElementById("timer").textContent =
+        negative ? "-" + result : result;
+}
+
+updateTimer();
+setInterval(updateTimer, 1000);
+
+
+/* =========================
+   СООБЩЕНИЯ
+========================= */
+
+const messages = [
+
+    "0JfQsNC80LAg0YLQtdC80L3QvtC1INC/0L7QtNC+0LLQvdC40Y8=",
+
+    "0KLQtdC60YIg0L7QstC+0YDQvtCy",
+
+    "0J3QsNC/INCQ0YHQv9Cw",
+
+    "0J7QutC+INCQ0YHQv9Cw0Y8=",
+
+    "0KLQtdC60YIg0Lgg0YLQtdC80L3QvtC1INC90LXQu9Cw",
+
+    "0JrQotCeLdCi0J4g0KHQnNCe0KLQoNCY0KI=",
+
+    "0JjQqdCYINCU0JDQm9Cs0KjQlQ==",
+
+    "0KHQm9CY0KjQmtCe0Jwg0J/QntCX0JTQndCe"
+
+];
+
+
+/* Показать случайное сообщение */
+
+function showMessage() {
+
+    const message =
+        document.createElement("div");
+
+    message.className = "message";
+
+    message.textContent =
+        messages[
+            Math.floor(
+                Math.random() * messages.length
+            )
+        ];
+
+    message.style.left =
+        (5 + Math.random() * 90) + "%";
+
+    message.style.top =
+        (5 + Math.random() * 90) + "%";
+
+    document.body.appendChild(message);
+
+    requestAnimationFrame(() => {
+        message.classList.add("show");
+    });
+
+    setTimeout(() => {
+
+        message.classList.remove("show");
+
+        setTimeout(() => {
+            message.remove();
+        }, 300);
+
+    }, 1500 + Math.random() * 2500);
+}
+
+
+/* Первое сообщение */
+
+setTimeout(showMessage, 4000);
+
+
+/* Следующие сообщения */
+
+function nextMessage() {
+
+    showMessage();
+
+    setTimeout(
+        nextMessage,
+        3000 + Math.random() * 7000
+    );
+}
+
+setTimeout(nextMessage, 7000);
+
+</script>
+
+</body>
+</html>
