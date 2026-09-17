@@ -52,20 +52,12 @@ html, body {
 
 <script>
 
-/* =========================
-   ТАЙМЕР
-========================= */
-
 const nowAtStart = new Date();
 const target = new Date(nowAtStart);
 
 let daysUntilSaturday =
     (6 - nowAtStart.getDay() + 7) % 7;
 
-/*
-   Если сейчас суббота и время уже прошло 15:00,
-   оставляем target сегодня — таймер станет отрицательным.
-*/
 
 target.setDate(
     nowAtStart.getDate() + daysUntilSaturday
@@ -116,44 +108,24 @@ updateTimer();
 setInterval(updateTimer, 1000);
 
 
-/* =========================
-   ARG СООБЩЕНИЯ
-========================= */
 
 const messages = [
-
-    "0J3QlSDQktCV0KDQrCDQotCQ0JnQnNCV0KDQow==",
-
-    "0JLQodCBINCi0J7Qm9Cs0JrQniDQndCQ0KfQmNCd0JDQldCi0KHQrw==",
-
-    "0JrQkNCW0JXQotCh0K8sINCS0KDQldCc0K8g0J/QoNCY0KjQm9Ce",
-
-    "0JLQodCBINCV0KnQgSDQl9CU0JXQodCsPw==",
-
-    "0K8g0JbQlNCjLg=="
-
+    "0JfQsNC80LAg0YLQtdC80L3QvtC1",
+    "0KLQtdC60YIg0L7QstC+0YDQvtCy",
+    "0J3QsNC/INCQ0YHQv9Cw",
+    "0J7QutC+INCQ0YHQv9Cw0Y8=",
+    "0KLQtdC60YIg0Lgg0YLQtdC80L3QvtC1",
+    "0JrQotCeINCj0JbQlSDQndCQ0KfQkNCb",
+    "0JjQqdCYINCU0JDQm9Cs0KjQlQ==",
+    "0KHQm9CY0KjQmtCe0Jwg0J/QntCX0JTQ"
 ];
 
+function showMessage(text) {
 
-/* =========================
-   СОЗДАНИЕ СООБЩЕНИЯ
-========================= */
-
-function showMessage() {
-
-    const message =
-        document.createElement("div");
+    const message = document.createElement("div");
 
     message.className = "message";
-
-    message.textContent =
-        messages[
-            Math.floor(
-                Math.random() * messages.length
-            )
-        ];
-
-    /* Случайное положение */
+    message.textContent = text;
 
     message.style.left =
         (5 + Math.random() * 90) + "%";
@@ -163,69 +135,49 @@ function showMessage() {
 
     document.body.appendChild(message);
 
-    /* Появление */
-
     requestAnimationFrame(() => {
         message.classList.add("show");
     });
 
-
-    /*
-       Время жизни:
-       от 2 до 10 секунд
-    */
-
-    const lifetime =
-        2000 + Math.random() * 8000;
-
-
     setTimeout(() => {
-
-        /* Исчезновение */
-
         message.classList.remove("show");
 
-
-        /*
-           Ждём окончания анимации,
-           затем удаляем элемент
-        */
-
         setTimeout(() => {
-
             message.remove();
-
-            /*
-               Сразу создаём новое сообщение,
-               чтобы постоянно было 5
-            */
-
-            showMessage();
-
         }, 300);
 
-    }, lifetime);
+    }, 1800 + Math.random() * 2500);
 }
 
 
-/* =========================
-   ЗАПУСК
-========================= */
 
-/*
-   Сразу создаём 5 сообщений.
-*/
+function startMessages() {
 
-for (let i = 0; i < 5; i++) {
+    const shuffled = [...messages]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 5);
 
-    setTimeout(() => {
-        showMessage();
-    }, i * 300);
+    let index = 0;
 
+    function next() {
+
+        if (index >= shuffled.length) {
+
+            setTimeout(startMessages, 5000);
+            return;
+        }
+
+        showMessage(shuffled[index]);
+
+        index++;
+
+        const delay =
+            1200 + Math.random() * 5000;
+
+        setTimeout(next, delay);
+    }
+
+    next();
 }
 
-</script>
-
-</body>
-</html>
-```
+setTimeout(startMessages, 3000);
