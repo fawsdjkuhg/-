@@ -49,10 +49,6 @@ html, body {
 <div id="timer">00:00:00:00</div>
 
 <script>
-/* =========================
-   ТАЙМЕР
-   Ближайшая суббота 15:00
-========================= */
 
 const target = new Date();
 const current = new Date();
@@ -62,11 +58,6 @@ let daysUntilSaturday =
 
 target.setDate(current.getDate() + daysUntilSaturday);
 target.setHours(15, 0, 0, 0);
-
-
-/* Если сейчас суббота после 15:00 —
-   оставляем сегодняшнюю дату,
-   чтобы таймер продолжил считать в минус */
 
 function updateTimer() {
 
@@ -107,11 +98,6 @@ function updateTimer() {
 updateTimer();
 setInterval(updateTimer, 1000);
 
-
-/* =========================
-   СООБЩЕНИЯ
-========================= */
-
 const messages = [
 
     "0JfQsNC80LAg0YLQtdC80L3QvtC1INC/0L7QtNC+0LLQvdC40Y8=",
@@ -133,7 +119,6 @@ const messages = [
 ];
 
 
-/* Показать случайное сообщение */
 
 function showMessage() {
 
@@ -173,12 +158,10 @@ function showMessage() {
 }
 
 
-/* Первое сообщение */
 
 setTimeout(showMessage, 4000);
 
 
-/* Следующие сообщения */
 
 function nextMessage() {
 
@@ -246,10 +229,6 @@ html, body {
 <div id="timer">00:00:00:00</div>
 
 <script>
-/* =========================
-   ТАЙМЕР
-   Ближайшая суббота 15:00
-========================= */
 
 const target = new Date();
 const current = new Date();
@@ -259,11 +238,6 @@ let daysUntilSaturday =
 
 target.setDate(current.getDate() + daysUntilSaturday);
 target.setHours(15, 0, 0, 0);
-
-
-/* Если сейчас суббота после 15:00 —
-   оставляем сегодняшнюю дату,
-   чтобы таймер продолжил считать в минус */
 
 function updateTimer() {
 
@@ -304,11 +278,6 @@ function updateTimer() {
 updateTimer();
 setInterval(updateTimer, 1000);
 
-
-/* =========================
-   СООБЩЕНИЯ
-========================= */
-
 const messages = [
 
     "0JfQsNC80LAg0YLQtdC80L3QvtC1INC/0L7QtNC+0LLQvdC40Y8=",
@@ -330,7 +299,6 @@ const messages = [
 ];
 
 
-/* Показать случайное сообщение */
 
 function showMessage() {
 
@@ -370,12 +338,10 @@ function showMessage() {
 }
 
 
-/* Первое сообщение */
 
 setTimeout(showMessage, 4000);
 
 
-/* Следующие сообщения */
 
 function nextMessage() {
 
