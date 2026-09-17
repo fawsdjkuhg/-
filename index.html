@@ -257,6 +257,170 @@ function nextMessage() {
 
 setTimeout(nextMessage, 7000);
 
+    document.getElementById("timer").textContent =
+        negative ? "-" + result : result;
+}
+
+updateTimer();
+setInterval(updateTimer, 1000);
+
+
+
+const messages = [
+
+    
+    "0J3QlSDQktCV0KDQrCDQotCQ0JnQnNCV0KDQow==",
+
+    "0JLQodCBINCi0J7Qm9Cs0JrQniDQndCQ0KfQmNCd0JDQldCi0KHQrw==",
+
+    "0JrQkNCW0JXQotCh0K8sINCS0KDQldCc0K8g0J/QoNCY0KjQm9Ce",
+
+    "0JLQodCBINCV0KnQgSDQl9CU0JXQodCsPw==",
+
+    "0K8g0JbQlNCjLg==",
+
+
+];
+
+
+
+function showMessage() {
+
+    const message =
+        document.createElement("div");
+
+    message.className = "message";
+
+    message.textContent =
+        messages[
+            Math.floor(
+                Math.random() * messages.length
+            )
+        ];
+
+    message.style.left =
+        (5 + Math.random() * 90) + "%";
+
+    message.style.top =
+        (5 + Math.random() * 90) + "%";
+
+    document.body.appendChild(message);
+
+    requestAnimationFrame(() => {
+        message.classList.add("show");
+    });
+
+    setTimeout(() => {
+
+        message.classList.remove("show");
+
+        setTimeout(() => {
+            message.remove();
+        }, 300);
+
+    }, 1500 + Math.random() * 2500);
+}
+
+
+
+setTimeout(showMessage, 4000);
+
+
+
+function nextMessage() {
+
+    showMessage();
+
+    setTimeout(
+        nextMessage,
+        3000 + Math.random() * 7000
+    );
+}
+
+setTimeout(nextMessage, 7000);
+
+    document.getElementById("timer").textContent =
+        negative ? "-" + result : result;
+}
+
+updateTimer();
+setInterval(updateTimer, 1000);
+
+
+
+const messages = [
+
+    
+    "0J3QlSDQktCV0KDQrCDQotCQ0JnQnNCV0KDQow==",
+
+    "0JLQodCBINCi0J7Qm9Cs0JrQniDQndCQ0KfQmNCd0JDQldCi0KHQrw==",
+
+    "0JrQkNCW0JXQotCh0K8sINCS0KDQldCc0K8g0J/QoNCY0KjQm9Ce",
+
+    "0JLQodCBINCV0KnQgSDQl9CU0JXQodCsPw==",
+
+    "0K8g0JbQlNCjLg==",
+
+
+];
+
+
+
+function showMessage() {
+
+    const message =
+        document.createElement("div");
+
+    message.className = "message";
+
+    message.textContent =
+        messages[
+            Math.floor(
+                Math.random() * messages.length
+            )
+        ];
+
+    message.style.left =
+        (5 + Math.random() * 90) + "%";
+
+    message.style.top =
+        (5 + Math.random() * 90) + "%";
+
+    document.body.appendChild(message);
+
+    requestAnimationFrame(() => {
+        message.classList.add("show");
+    });
+
+    setTimeout(() => {
+
+        message.classList.remove("show");
+
+        setTimeout(() => {
+            message.remove();
+        }, 300);
+
+    }, 1500 + Math.random() * 2500);
+}
+
+
+
+setTimeout(showMessage, 4000);
+
+
+
+function nextMessage() {
+
+    showMessage();
+
+    setTimeout(
+        nextMessage,
+        3000 + Math.random() * 7000
+    );
+}
+
+setTimeout(nextMessage, 7000);
+
 </script>
 
 </body>
