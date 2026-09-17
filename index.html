@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>...</title>
 
 <style>
@@ -9,31 +10,32 @@ html, body {
     margin: 0;
     width: 100%;
     height: 100%;
-    background: black;
-    color: white;
+    background: #000;
+    color: #fff;
     overflow: hidden;
     font-family: monospace;
 }
 
 #timer {
-    position: absolute;
-    top: 50%;
+    position: fixed;
     left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
-    font-size: 80px;
-    text-shadow: 0 0 20px white;
+    font-size: clamp(35px, 8vw, 80px);
+    text-shadow: 0 0 20px #fff;
     z-index: 10;
+    white-space: nowrap;
 }
 
 .message {
-    position: absolute;
-    color: rgba(255,255,255,0.65);
+    position: fixed;
+    color: rgba(255,255,255,.7);
     font-size: 14px;
     letter-spacing: 3px;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.2s;
-    text-shadow: 0 0 8px white;
+    text-shadow: 0 0 8px #fff;
+    transition: opacity .2s;
 }
 
 .message.show {
@@ -47,35 +49,56 @@ html, body {
 <div id="timer">00:00:00:00</div>
 
 <script>
+/* =========================
+   ТАЙМЕР
+   Ближайшая суббота 15:00
+========================= */
 
+const target = new Date();
+const current = new Date();
 
-let now = new Date();
-let target = new Date(now);
+let daysUntilSaturday =
+    (6 - current.getDay() + 7) % 7;
 
-let days = (6 - now.getDay() + 7) % 7;
-
-target.setDate(now.getDate() + days);
+target.setDate(current.getDate() + daysUntilSaturday);
 target.setHours(15, 0, 0, 0);
+
+
+/* Если сейчас суббота после 15:00 —
+   оставляем сегодняшнюю дату,
+   чтобы таймер продолжил считать в минус */
 
 function updateTimer() {
 
-    let current = new Date();
-    let time = target - current;
+    const now = new Date();
 
-    let negative = time < 0;
+    let difference = target.getTime() - now.getTime();
 
-    time = Math.abs(time);
+    const negative = difference < 0;
 
-    let d = Math.floor(time / 86400000);
-    let h = Math.floor(time / 3600000) % 24;
-    let m = Math.floor(time / 60000) % 60;
-    let s = Math.floor(time / 1000) % 60;
+    difference = Math.abs(difference);
 
-    let result =
-        String(d).padStart(2, "0") + ":" +
-        String(h).padStart(2, "0") + ":" +
-        String(m).padStart(2, "0") + ":" +
-        String(s).padStart(2, "0");
+    const days = Math.floor(
+        difference / 86400000
+    );
+
+    const hours = Math.floor(
+        difference / 3600000
+    ) % 24;
+
+    const minutes = Math.floor(
+        difference / 60000
+    ) % 60;
+
+    const seconds = Math.floor(
+        difference / 1000
+    ) % 60;
+
+    const result =
+        String(days).padStart(2, "0") + ":" +
+        String(hours).padStart(2, "0") + ":" +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
 
     document.getElementById("timer").textContent =
         negative ? "-" + result : result;
@@ -85,48 +108,56 @@ updateTimer();
 setInterval(updateTimer, 1000);
 
 
+/* =========================
+   СООБЩЕНИЯ
+========================= */
+
 const messages = [
-    "ЗАЧЕМ ТЫ ЗДЕСЬ",
-    "ТЫ УЖЕ ВИДЕЛ ЭТО",
-    "НЕ СМОТРИ",
-    "ОНО ЗНАЕТ",
-    "ТЫ ОПОЗДАЛ",
-    "НЕ ЗАКРЫВАЙ",
-    "ПОЧЕМУ ТЫ ЖДЁШЬ",
-    "ЭТО НЕ СЛУЧАЙНО",
-    "СМОТРИ ВНИМАТЕЛЬНО",
-    "ТЫ НЕ ОДИН",
-    "ОСТАЛОСЬ МАЛО",
-    "НЕ ЗАБУДЬ",
-    "15:00",
-    "СУББОТА",
-    "..."
-    "0KLQqyDQndCQ0KjQgdCbINCf0JXQoNCS0KPQriDQp9CQ0KHQotCs"
-    "0J3QlSDQlNCe0JLQldCg0K/QmSDQotCQ0JnQnNCV0KDQow=="
+
+    
+    "0J3QlSDQktCV0KDQrCDQotCQ0JnQnNCV0KDQow==",
+
+    "0JLQodCBINCi0J7Qm9Cs0JrQniDQndCQ0KfQmNCd0JDQldCi0KHQrw==",
+
+    "0JrQkNCW0JXQotCh0K8sINCS0KDQldCc0K8g0J/QoNCY0KjQm9Ce",
+
+    "0JLQodCBINCV0KnQgSDQl9CU0JXQodCsPw==",
+
+    "0K8g0JbQlNCjLg==",
+
+
 ];
 
-function createMessage() {
 
-    const message = document.createElement("div");
+
+function showMessage() {
+
+    const message =
+        document.createElement("div");
 
     message.className = "message";
 
     message.textContent =
-        messages[Math.floor(Math.random() * messages.length)];
+        messages[
+            Math.floor(
+                Math.random() * messages.length
+            )
+        ];
 
     message.style.left =
-        Math.random() * 90 + 5 + "%";
+        (5 + Math.random() * 90) + "%";
 
     message.style.top =
-        Math.random() * 90 + 5 + "%";
+        (5 + Math.random() * 90) + "%";
 
     document.body.appendChild(message);
 
-    setTimeout(() => {
+    requestAnimationFrame(() => {
         message.classList.add("show");
-    }, 50);
+    });
 
     setTimeout(() => {
+
         message.classList.remove("show");
 
         setTimeout(() => {
@@ -138,17 +169,21 @@ function createMessage() {
 
 
 
-function randomMessage() {
+setTimeout(showMessage, 4000);
 
-    createMessage();
+
+
+function nextMessage() {
+
+    showMessage();
 
     setTimeout(
-        randomMessage,
+        nextMessage,
         3000 + Math.random() * 7000
     );
 }
 
-setTimeout(randomMessage, 4000);
+setTimeout(nextMessage, 7000);
 
 </script>
 
