@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -35,7 +36,8 @@ html, body {
     opacity: 0;
     pointer-events: none;
     text-shadow: 0 0 8px #fff;
-    transition: opacity .2s;
+    transition: opacity .3s;
+    z-index: 5;
 }
 
 .message.show {
@@ -50,22 +52,34 @@ html, body {
 
 <script>
 
-const target = new Date();
-const current = new Date();
+/* =========================
+   ТАЙМЕР
+========================= */
+
+const nowAtStart = new Date();
+const target = new Date(nowAtStart);
 
 let daysUntilSaturday =
-    (6 - current.getDay() + 7) % 7;
+    (6 - nowAtStart.getDay() + 7) % 7;
 
-target.setDate(current.getDate() + daysUntilSaturday);
+/*
+   Если сейчас суббота и время уже прошло 15:00,
+   оставляем target сегодня — таймер станет отрицательным.
+*/
+
+target.setDate(
+    nowAtStart.getDate() + daysUntilSaturday
+);
+
 target.setHours(15, 0, 0, 0);
-
 
 
 function updateTimer() {
 
     const now = new Date();
 
-    let difference = target.getTime() - now.getTime();
+    let difference =
+        target.getTime() - now.getTime();
 
     const negative = difference < 0;
 
@@ -98,13 +112,16 @@ function updateTimer() {
 }
 
 updateTimer();
+
 setInterval(updateTimer, 1000);
 
 
+/* =========================
+   ARG СООБЩЕНИЯ
+========================= */
 
 const messages = [
 
-    
     "0J3QlSDQktCV0KDQrCDQotCQ0JnQnNCV0KDQow==",
 
     "0JLQodCBINCi0J7Qm9Cs0JrQniDQndCQ0KfQmNCd0JDQldCi0KHQrw==",
@@ -113,12 +130,14 @@ const messages = [
 
     "0JLQodCBINCV0KnQgSDQl9CU0JXQodCsPw==",
 
-    "0K8g0JbQlNCjLg==",
-
+    "0K8g0JbQlNCjLg=="
 
 ];
 
 
+/* =========================
+   СОЗДАНИЕ СООБЩЕНИЯ
+========================= */
 
 function showMessage() {
 
@@ -134,87 +153,7 @@ function showMessage() {
             )
         ];
 
-    message.style.left =
-        (5 + Math.random() * 90) + "%";
-
-    message.style.top =
-        (5 + Math.random() * 90) + "%";
-
-    document.body.appendChild(message);
-
-    requestAnimationFrame(() => {
-        message.classList.add("show");
-    });
-
-    setTimeout(() => {
-
-        message.classList.remove("show");
-
-        setTimeout(() => {
-            message.remove();
-        }, 300);
-
-    }, 1500 + Math.random() * 2500);
-}
-
-
-
-setTimeout(showMessage, 4000);
-
-
-
-function nextMessage() {
-
-    showMessage();
-
-    setTimeout(
-        nextMessage,
-        3000 + Math.random() * 7000
-    );
-}
-
-setTimeout(nextMessage, 7000);
-
-    document.getElementById("timer").textContent =
-        negative ? "-" + result : result;
-}
-
-updateTimer();
-setInterval(updateTimer, 1000);
-
-
-
-const messages = [
-
-    
-    "0J3QlSDQktCV0KDQrCDQotCQ0JnQnNCV0KDQow==",
-
-    "0JLQodCBINCi0J7Qm9Cs0JrQniDQndCQ0KfQmNCd0JDQldCi0KHQrw==",
-
-    "0JrQkNCW0JXQotCh0K8sINCS0KDQldCc0K8g0J/QoNCY0KjQm9Ce",
-
-    "0JLQodCBINCV0KnQgSDQl9CU0JXQodCsPw==",
-
-    "0K8g0JbQlNCjLg==",
-
-
-];
-
-
-
-function showMessage() {
-
-    const message =
-        document.createElement("div");
-
-    message.className = "message";
-
-    message.textContent =
-        messages[
-            Math.floor(
-                Math.random() * messages.length
-            )
-        ];
+    /* Случайное положение */
 
     message.style.left =
         (5 + Math.random() * 90) + "%";
@@ -224,204 +163,69 @@ function showMessage() {
 
     document.body.appendChild(message);
 
-    requestAnimationFrame(() => {
-        message.classList.add("show");
-    });
-
-    setTimeout(() => {
-
-        message.classList.remove("show");
-
-        setTimeout(() => {
-            message.remove();
-        }, 300);
-
-    }, 1500 + Math.random() * 2500);
-}
-
-
-
-setTimeout(showMessage, 4000);
-
-
-
-function nextMessage() {
-
-    showMessage();
-
-    setTimeout(
-        nextMessage,
-        3000 + Math.random() * 7000
-    );
-}
-
-setTimeout(nextMessage, 7000);
-
-    document.getElementById("timer").textContent =
-        negative ? "-" + result : result;
-}
-
-updateTimer();
-setInterval(updateTimer, 1000);
-
-
-
-const messages = [
-
-    
-    "0J3QlSDQktCV0KDQrCDQotCQ0JnQnNCV0KDQow==",
-
-    "0JLQodCBINCi0J7Qm9Cs0JrQniDQndCQ0KfQmNCd0JDQldCi0KHQrw==",
-
-    "0JrQkNCW0JXQotCh0K8sINCS0KDQldCc0K8g0J/QoNCY0KjQm9Ce",
-
-    "0JLQodCBINCV0KnQgSDQl9CU0JXQodCsPw==",
-
-    "0K8g0JbQlNCjLg==",
-
-
-];
-
-
-
-function showMessage() {
-
-    const message =
-        document.createElement("div");
-
-    message.className = "message";
-
-    message.textContent =
-        messages[
-            Math.floor(
-                Math.random() * messages.length
-            )
-        ];
-
-    message.style.left =
-        (5 + Math.random() * 90) + "%";
-
-    message.style.top =
-        (5 + Math.random() * 90) + "%";
-
-    document.body.appendChild(message);
+    /* Появление */
 
     requestAnimationFrame(() => {
         message.classList.add("show");
     });
 
-    setTimeout(() => {
 
-        message.classList.remove("show");
+    /*
+       Время жизни:
+       от 2 до 10 секунд
+    */
 
-        setTimeout(() => {
-            message.remove();
-        }, 300);
+    const lifetime =
+        2000 + Math.random() * 8000;
 
-    }, 1500 + Math.random() * 2500);
-}
-
-
-
-setTimeout(showMessage, 4000);
-
-
-
-function nextMessage() {
-
-    showMessage();
-
-    setTimeout(
-        nextMessage,
-        3000 + Math.random() * 7000
-    );
-}
-
-setTimeout(nextMessage, 7000);
-
-    document.getElementById("timer").textContent =
-        negative ? "-" + result : result;
-}
-
-updateTimer();
-setInterval(updateTimer, 1000);
-
-
-
-const messages = [
-
-    
-    "0J3QlSDQktCV0KDQrCDQotCQ0JnQnNCV0KDQow==",
-
-    "0JLQodCBINCi0J7Qm9Cs0JrQniDQndCQ0KfQmNCd0JDQldCi0KHQrw==",
-
-    "0JrQkNCW0JXQotCh0K8sINCS0KDQldCc0K8g0J/QoNCY0KjQm9Ce",
-
-    "0JLQodCBINCV0KnQgSDQl9CU0JXQodCsPw==",
-
-    "0K8g0JbQlNCjLg==",
-
-
-];
-
-
-
-function showMessage() {
-
-    const message =
-        document.createElement("div");
-
-    message.className = "message";
-
-    message.textContent =
-        messages[
-            Math.floor(
-                Math.random() * messages.length
-            )
-        ];
-
-    message.style.left =
-        (5 + Math.random() * 90) + "%";
-
-    message.style.top =
-        (5 + Math.random() * 90) + "%";
-
-    document.body.appendChild(message);
-
-    requestAnimationFrame(() => {
-        message.classList.add("show");
-    });
 
     setTimeout(() => {
 
+        /* Исчезновение */
+
         message.classList.remove("show");
 
+
+        /*
+           Ждём окончания анимации,
+           затем удаляем элемент
+        */
+
         setTimeout(() => {
+
             message.remove();
+
+            /*
+               Сразу создаём новое сообщение,
+               чтобы постоянно было 5
+            */
+
+            showMessage();
+
         }, 300);
 
-    }, 1500 + Math.random() * 2500);
+    }, lifetime);
 }
 
 
+/* =========================
+   ЗАПУСК
+========================= */
 
-setTimeout(showMessage, 4000);
+/*
+   Сразу создаём 5 сообщений.
+*/
 
+for (let i = 0; i < 5; i++) {
 
+    setTimeout(() => {
+        showMessage();
+    }, i * 300);
 
-function nextMessage() {
-
-    showMessage();
-
-    setTimeout(
-        nextMessage,
-        3000 + Math.random() * 7000
-    );
 }
-
-setTimeout(nextMessage, 7000);
 
 </script>
 
 </body>
 </html>
+```
