@@ -2,23 +2,42 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Countdown</title>
+<title>...</title>
 
 <style>
-body {
+html, body {
     margin: 0;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background: black;
     color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow: hidden;
     font-family: monospace;
 }
 
 #timer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: 80px;
     text-shadow: 0 0 20px white;
+    z-index: 10;
+}
+
+.message {
+    position: absolute;
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    letter-spacing: 3px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    text-shadow: 0 0 8px white;
+}
+
+.message.show {
+    opacity: 1;
 }
 </style>
 </head>
@@ -28,6 +47,8 @@ body {
 <div id="timer">00:00:00:00</div>
 
 <script>
+
+
 let now = new Date();
 let target = new Date(now);
 
@@ -36,7 +57,8 @@ let days = (6 - now.getDay() + 7) % 7;
 target.setDate(now.getDate() + days);
 target.setHours(15, 0, 0, 0);
 
-function update() {
+function updateTimer() {
+
     let current = new Date();
     let time = target - current;
 
@@ -59,8 +81,73 @@ function update() {
         negative ? "-" + result : result;
 }
 
-update();
-setInterval(update, 1000);
+updateTimer();
+setInterval(updateTimer, 1000);
+
+
+const messages = [
+    "ЗАЧЕМ ТЫ ЗДЕСЬ",
+    "ТЫ УЖЕ ВИДЕЛ ЭТО",
+    "НЕ СМОТРИ",
+    "ОНО ЗНАЕТ",
+    "ТЫ ОПОЗДАЛ",
+    "НЕ ЗАКРЫВАЙ",
+    "ПОЧЕМУ ТЫ ЖДЁШЬ",
+    "ЭТО НЕ СЛУЧАЙНО",
+    "СМОТРИ ВНИМАТЕЛЬНО",
+    "ТЫ НЕ ОДИН",
+    "ОСТАЛОСЬ МАЛО",
+    "НЕ ЗАБУДЬ",
+    "15:00",
+    "СУББОТА",
+    "..."
+];
+
+function createMessage() {
+
+    const message = document.createElement("div");
+
+    message.className = "message";
+
+    message.textContent =
+        messages[Math.floor(Math.random() * messages.length)];
+
+    message.style.left =
+        Math.random() * 90 + 5 + "%";
+
+    message.style.top =
+        Math.random() * 90 + 5 + "%";
+
+    document.body.appendChild(message);
+
+    setTimeout(() => {
+        message.classList.add("show");
+    }, 50);
+
+    setTimeout(() => {
+        message.classList.remove("show");
+
+        setTimeout(() => {
+            message.remove();
+        }, 300);
+
+    }, 1500 + Math.random() * 2500);
+}
+
+
+
+function randomMessage() {
+
+    createMessage();
+
+    setTimeout(
+        randomMessage,
+        3000 + Math.random() * 7000
+    );
+}
+
+setTimeout(randomMessage, 4000);
+
 </script>
 
 </body>
