@@ -35,8 +35,7 @@ html, body {
     opacity: 0;
     pointer-events: none;
     text-shadow: 0 0 8px #fff;
-    transition: opacity .3s;
-    z-index: 5;
+    transition: opacity .2s;
 }
 
 .message.show {
@@ -51,26 +50,20 @@ html, body {
 
 <script>
 
-const nowAtStart = new Date();
-const target = new Date(nowAtStart);
+const target = new Date();
+const current = new Date();
 
 let daysUntilSaturday =
-    (6 - nowAtStart.getDay() + 7) % 7;
+    (6 - current.getDay() + 7) % 7;
 
-
-target.setDate(
-    nowAtStart.getDate() + daysUntilSaturday
-);
-
+target.setDate(current.getDate() + daysUntilSaturday);
 target.setHours(15, 0, 0, 0);
-
 
 function updateTimer() {
 
     const now = new Date();
 
-    let difference =
-        target.getTime() - now.getTime();
+    let difference = target.getTime() - now.getTime();
 
     const negative = difference < 0;
 
@@ -103,10 +96,7 @@ function updateTimer() {
 }
 
 updateTimer();
-
 setInterval(updateTimer, 1000);
-
-
 
 const messages = [
     "0JfQsNC80LAg0YLQtdC80L3QvtC1",
@@ -149,7 +139,6 @@ function showMessage(text) {
 }
 
 
-
 function startMessages() {
 
     const shuffled = [...messages]
@@ -161,7 +150,7 @@ function startMessages() {
     function next() {
 
         if (index >= shuffled.length) {
-
+            
             setTimeout(startMessages, 5000);
             return;
         }
