@@ -3,87 +3,323 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>...</title>
 
 <style>
+
+* {
+    box-sizing: border-box;
+}
+
 html, body {
     margin: 0;
     width: 100%;
     height: 100%;
     background: #000;
-    color: #fff;
+    color: white;
     overflow: hidden;
     font-family: monospace;
 }
 
-#timer {
+
+.screen {
     position: fixed;
+
+    inset: 0;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #111 0%,
+            #030303 65%,
+            #000 100%
+        );
+}
+
+.eye {
+    position: absolute;
+
     left: 50%;
     top: 50%;
+
+    transform:
+        translate(-50%, -50%)
+        rotate(-3deg);
+
+    width: 380px;
+    height: 210px;
+
+    border: 5px solid rgba(255,255,255,.08);
+
+    border-radius: 70% 0;
+
+    opacity: .25;
+
+    z-index: 1;
+}
+
+.eye::before {
+    content: "";
+
+    position: absolute;
+
+    width: 125px;
+    height: 125px;
+
+    left: 50%;
+    top: 50%;
+
     transform: translate(-50%, -50%);
-    font-size: clamp(35px, 8vw, 80px);
-    text-shadow: 0 0 20px #fff;
-    z-index: 10;
+
+    border: 4px solid rgba(255,255,255,.12);
+
+    border-radius: 50%;
+}
+
+.eye::after {
+    content: "";
+
+    position: absolute;
+
+    width: 35px;
+    height: 35px;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    background: rgba(255,255,255,.12);
+
+    border-radius: 50%;
+}
+
+#timer {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    color: white;
+
+    font-size: clamp(32px, 7vw, 80px);
+
+    text-shadow:
+        0 0 10px white,
+        0 0 25px rgba(255,255,255,.4);
+
+    z-index: 5;
+
     white-space: nowrap;
 }
 
 .message {
-    position: fixed;
-    color: rgba(255,255,255,.7);
-    font-size: 14px;
+    position: absolute;
+
+    color: rgba(255,255,255,.75);
+
+    font-size: 13px;
+
     letter-spacing: 3px;
+
     opacity: 0;
+
+    z-index: 8;
+
     pointer-events: none;
-    text-shadow: 0 0 8px #fff;
+
+    text-shadow:
+        0 0 7px white;
+
     transition: opacity .2s;
 }
 
 .message.show {
     opacity: 1;
 }
+
+.red-button {
+    position: fixed;
+
+    right: 2%;
+    bottom: 1.5%;
+
+    width: 90px;
+    height: 45px;
+
+    background: #220000;
+
+    border: 3px solid #550000;
+
+    border-radius: 5px;
+
+    box-shadow:
+        0 0 12px rgba(255,0,0,.15),
+        inset 0 0 10px #000;
+
+    cursor: default;
+
+    opacity: .75;
+
+    z-index: 30;
+}
+
+.red-button::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 45px;
+    height: 18px;
+
+    background: #350000;
+
+    border-radius: 3px;
+
+    box-shadow:
+        inset 0 0 8px #000;
+}
+
+.scanlines {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 20;
+
+    pointer-events: none;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,.035) 0px,
+            rgba(255,255,255,.035) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+.screen::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background: rgba(255,255,255,.01);
+
+    animation: flicker .15s infinite;
+
+    z-index: 19;
+}
+
+@keyframes flicker {
+
+    0% {
+        opacity: .2;
+    }
+
+    50% {
+        opacity: .05;
+    }
+
+    100% {
+        opacity: .15;
+    }
+
+}
+
 </style>
 </head>
 
+
 <body>
 
-<div id="timer">00:00:00:00</div>
+<div class="screen">
+
+
+    <div class="eye"></div>
+
+
+    <div id="timer">
+        00:00:00:00
+    </div>
+
+
+
+    <div class="scanlines"></div>
+
+</div>
+
+
+
+<div class="red-button"></div>
+
 
 <script>
 
 const target = new Date();
 const current = new Date();
 
-let daysUntilSaturday =
+const daysUntilSaturday =
     (6 - current.getDay() + 7) % 7;
 
-target.setDate(current.getDate() + daysUntilSaturday);
+target.setDate(
+    current.getDate() + daysUntilSaturday
+);
+
 target.setHours(15, 0, 0, 0);
+
 
 function updateTimer() {
 
     const now = new Date();
 
-    let difference = target.getTime() - now.getTime();
+    let difference =
+        target.getTime() - now.getTime();
 
-    const negative = difference < 0;
+    const negative =
+        difference < 0;
 
-    difference = Math.abs(difference);
+    difference =
+        Math.abs(difference);
 
-    const days = Math.floor(
-        difference / 86400000
-    );
 
-    const hours = Math.floor(
-        difference / 3600000
-    ) % 24;
+    const days =
+        Math.floor(
+            difference / 86400000
+        );
 
-    const minutes = Math.floor(
-        difference / 60000
-    ) % 60;
 
-    const seconds = Math.floor(
-        difference / 1000
-    ) % 60;
+    const hours =
+        Math.floor(
+            difference / 3600000
+        ) % 24;
+
+
+    const minutes =
+        Math.floor(
+            difference / 60000
+        ) % 60;
+
+
+    const seconds =
+        Math.floor(
+            difference / 1000
+        ) % 60;
+
 
     const result =
         String(days).padStart(2, "0") + ":" +
@@ -91,16 +327,22 @@ function updateTimer() {
         String(minutes).padStart(2, "0") + ":" +
         String(seconds).padStart(2, "0");
 
-    document.getElementById("timer").textContent =
-        negative ? "-" + result : result;
+
+    document.getElementById("timer")
+        .textContent =
+        negative
+        ? "-" + result
+        : result;
 }
 
+
 updateTimer();
+
 setInterval(updateTimer, 1000);
 
 const messages = [
 
-    "0JfQsNC80LAg0YLQtdC80L3QvtC1INC/0L7QtNC+0LLQvdC40Y8=",
+    "0JfQsNC80LAg0YLQtdC80L3QvtC1",
 
     "0KLQtdC60YIg0L7QstC+0YDQvtCy",
 
@@ -108,252 +350,114 @@ const messages = [
 
     "0J7QutC+INCQ0YHQv9Cw0Y8=",
 
-    "0KLQtdC60YIg0Lgg0YLQtdC80L3QvtC1INC90LXQu9Cw",
+    "0KLQtdC60YIg0Lgg0YLQtdC80L3QvtC1",
 
-    "0JrQotCeLdCi0J4g0KHQnNCe0KLQoNCY0KI=",
+    "0JrQotCeINCj0JbQlSDQndCQ0KfQkNCb",
 
     "0JjQqdCYINCU0JDQm9Cs0KjQlQ==",
 
-    "0KHQm9CY0KjQmtCe0Jwg0J/QntCX0JTQndCe"
+    "0KHQm9CY0KjQmtCe0Jwg0J/QntCX0JTQ"
 
 ];
 
 
-
-function showMessage() {
+function showMessage(text) {
 
     const message =
         document.createElement("div");
 
-    message.className = "message";
+    message.className =
+        "message";
 
     message.textContent =
-        messages[
-            Math.floor(
-                Math.random() * messages.length
-            )
-        ];
+        text;
+
 
     message.style.left =
         (5 + Math.random() * 90) + "%";
 
+
     message.style.top =
         (5 + Math.random() * 90) + "%";
 
-    document.body.appendChild(message);
+
+    document.querySelector(".screen")
+        .appendChild(message);
+
 
     requestAnimationFrame(() => {
+
         message.classList.add("show");
+
     });
+
 
     setTimeout(() => {
 
         message.classList.remove("show");
 
         setTimeout(() => {
+
             message.remove();
+
         }, 300);
 
-    }, 1500 + Math.random() * 2500);
+    }, 1800 + Math.random() * 2500);
+}
+
+function startMessages() {
+
+    const shuffled =
+        [...messages]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 5);
+
+
+    let index = 0;
+
+
+    function next() {
+
+        if (index >= shuffled.length) {
+
+            setTimeout(
+                startMessages,
+                5000
+            );
+
+            return;
+        }
+
+
+        showMessage(
+            shuffled[index]
+        );
+
+
+        index++;
+
+
+        const delay =
+            1200 +
+            Math.random() * 5000;
+
+
+        setTimeout(
+            next,
+            delay
+        );
+
+    }
+
+
+    next();
 }
 
 
-
-setTimeout(showMessage, 4000);
-
-
-
-function nextMessage() {
-
-    showMessage();
-
-    setTimeout(
-        nextMessage,
-        3000 + Math.random() * 7000
-    );
-}
-
-setTimeout(nextMessage, 7000);
-
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>...</title>
-
-<style>
-html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    color: #fff;
-    overflow: hidden;
-    font-family: monospace;
-}
-
-#timer {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: clamp(35px, 8vw, 80px);
-    text-shadow: 0 0 20px #fff;
-    z-index: 10;
-    white-space: nowrap;
-}
-
-.message {
-    position: fixed;
-    color: rgba(255,255,255,.7);
-    font-size: 14px;
-    letter-spacing: 3px;
-    opacity: 0;
-    pointer-events: none;
-    text-shadow: 0 0 8px #fff;
-    transition: opacity .2s;
-}
-
-.message.show {
-    opacity: 1;
-}
-</style>
-</head>
-
-<body>
-
-<div id="timer">00:00:00:00</div>
-
-<script>
-
-const target = new Date();
-const current = new Date();
-
-let daysUntilSaturday =
-    (6 - current.getDay() + 7) % 7;
-
-target.setDate(current.getDate() + daysUntilSaturday);
-target.setHours(15, 0, 0, 0);
-
-function updateTimer() {
-
-    const now = new Date();
-
-    let difference = target.getTime() - now.getTime();
-
-    const negative = difference < 0;
-
-    difference = Math.abs(difference);
-
-    const days = Math.floor(
-        difference / 86400000
-    );
-
-    const hours = Math.floor(
-        difference / 3600000
-    ) % 24;
-
-    const minutes = Math.floor(
-        difference / 60000
-    ) % 60;
-
-    const seconds = Math.floor(
-        difference / 1000
-    ) % 60;
-
-    const result =
-        String(days).padStart(2, "0") + ":" +
-        String(hours).padStart(2, "0") + ":" +
-        String(minutes).padStart(2, "0") + ":" +
-        String(seconds).padStart(2, "0");
-
-    document.getElementById("timer").textContent =
-        negative ? "-" + result : result;
-}
-
-updateTimer();
-setInterval(updateTimer, 1000);
-
-const messages = [
-
-    "0JfQsNC80LAg0YLQtdC80L3QvtC1INC/0L7QtNC+0LLQvdC40Y8=",
-
-    "0KLQtdC60YIg0L7QstC+0YDQvtCy",
-
-    "0J3QsNC/INCQ0YHQv9Cw",
-
-    "0J7QutC+INCQ0YHQv9Cw0Y8=",
-
-    "0KLQtdC60YIg0Lgg0YLQtdC80L3QvtC1INC90LXQu9Cw",
-
-    "0JrQotCeLdCi0J4g0KHQnNCe0KLQoNCY0KI=",
-
-    "0JjQqdCYINCU0JDQm9Cs0KjQlQ==",
-
-    "0KHQm9CY0KjQmtCe0Jwg0J/QntCX0JTQndCe"
-
-];
-
-
-
-function showMessage() {
-
-    const message =
-        document.createElement("div");
-
-    message.className = "message";
-
-    message.textContent =
-        messages[
-            Math.floor(
-                Math.random() * messages.length
-            )
-        ];
-
-    message.style.left =
-        (5 + Math.random() * 90) + "%";
-
-    message.style.top =
-        (5 + Math.random() * 90) + "%";
-
-    document.body.appendChild(message);
-
-    requestAnimationFrame(() => {
-        message.classList.add("show");
-    });
-
-    setTimeout(() => {
-
-        message.classList.remove("show");
-
-        setTimeout(() => {
-            message.remove();
-        }, 300);
-
-    }, 1500 + Math.random() * 2500);
-}
-
-
-
-setTimeout(showMessage, 4000);
-
-
-
-function nextMessage() {
-
-    showMessage();
-
-    setTimeout(
-        nextMessage,
-        3000 + Math.random() * 7000
-    );
-}
-
-setTimeout(nextMessage, 7000);
+setTimeout(
+    startMessages,
+    3000
+);
 
 </script>
 
