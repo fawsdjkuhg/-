@@ -7,6 +7,7 @@
 <title>...</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -16,23 +17,38 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
+
     background: #000;
     color: #fff;
+
     font-family: monospace;
 }
+
+
+/* =========================
+   ГЛАВНЫЙ ЭКРАН
+========================= */
 
 #main {
     position: fixed;
     inset: 0;
+
     background: #000;
+
     overflow: hidden;
 }
 
 
+/* =========================
+   СКАНЛАЙНЫ
+========================= */
+
 #main::after {
     content: "";
+
     position: absolute;
     inset: 0;
+
     pointer-events: none;
 
     background:
@@ -47,8 +63,14 @@ html, body {
     z-index: 20;
 }
 
+
+/* =========================
+   ГЛАЗ
+========================= */
+
 .eye {
     position: absolute;
+
     width: 520px;
     height: 280px;
 
@@ -58,10 +80,12 @@ html, body {
     transform: translate(-50%, -50%);
 
     border: 3px solid rgba(255,255,255,0.08);
+
     border-radius: 50%;
 
     opacity: 0.55;
 }
+
 
 .eye::before {
     content: "";
@@ -81,6 +105,7 @@ html, body {
     border-radius: 50%;
 }
 
+
 .eye::after {
     content: "";
 
@@ -99,7 +124,13 @@ html, body {
     border-radius: 50%;
 }
 
+
+/* =========================
+   ТАЙМЕР
+========================= */
+
 #timer {
+
     position: absolute;
 
     left: 50%;
@@ -118,31 +149,13 @@ html, body {
     z-index: 5;
 }
 
-.message {
-    position: absolute;
 
-    color: rgba(255,255,255,0.7);
-
-    font-size: 14px;
-
-    pointer-events: none;
-
-    z-index: 6;
-
-    animation: appear 0.3s ease;
-}
-
-@keyframes appear {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
+/* =========================
+   КРАСНАЯ КНОПКА
+========================= */
 
 #redButton {
+
     position: fixed;
 
     right: 25px;
@@ -168,7 +181,9 @@ html, body {
     transition: 0.2s;
 }
 
+
 #redButton:hover {
+
     background: #d00000;
 
     box-shadow:
@@ -176,11 +191,18 @@ html, body {
         0 0 40px rgba(255,0,0,0.5);
 }
 
+
 #redButton:active {
     transform: scale(0.9);
 }
 
+
+/* =========================
+   РАБОЧИЙ СТОЛ
+========================= */
+
 #desktop {
+
     position: fixed;
 
     inset: 0;
@@ -198,17 +220,24 @@ html, body {
     z-index: 200;
 }
 
+
 #desktop.active {
     display: block;
 }
 
 
+/* =========================
+   ВЕРХНЯЯ ПАНЕЛЬ
+========================= */
+
 .desktop-header {
+
     height: 45px;
 
     border-bottom: 1px solid #333;
 
     display: flex;
+
     align-items: center;
 
     padding: 0 15px;
@@ -219,7 +248,12 @@ html, body {
 }
 
 
+/* =========================
+   ИКОНКИ
+========================= */
+
 .icons {
+
     display: flex;
 
     gap: 35px;
@@ -227,7 +261,9 @@ html, body {
     padding: 30px;
 }
 
+
 .icon {
+
     width: 100px;
 
     text-align: center;
@@ -239,11 +275,14 @@ html, body {
     user-select: none;
 }
 
+
 .icon:hover {
     color: white;
 }
 
+
 .icon-symbol {
+
     width: 55px;
     height: 45px;
 
@@ -256,7 +295,9 @@ html, body {
     position: relative;
 }
 
+
 .icon-symbol::before {
+
     content: "";
 
     position: absolute;
@@ -270,13 +311,21 @@ html, body {
     background: #555;
 }
 
+
 .icon-name {
+
     font-size: 13px;
 
     word-break: break-word;
 }
 
+
+/* =========================
+   ОКНО ФАЙЛА
+========================= */
+
 #fileWindow {
+
     position: absolute;
 
     width: min(700px, 90vw);
@@ -299,11 +348,14 @@ html, body {
     z-index: 300;
 }
 
+
 #fileWindow.active {
     display: block;
 }
 
+
 .window-header {
+
     height: 35px;
 
     border-bottom: 1px solid #555;
@@ -319,11 +371,14 @@ html, body {
     background: #151515;
 }
 
+
 #fileName {
     color: #aaa;
 }
 
+
 #closeFile {
+
     border: none;
 
     background: transparent;
@@ -337,11 +392,14 @@ html, body {
     font-size: 18px;
 }
 
+
 #closeFile:hover {
     color: red;
 }
 
+
 #fileContent {
+
     padding: 20px;
 
     white-space: pre-wrap;
@@ -355,7 +413,13 @@ html, body {
     height: calc(100% - 35px);
 }
 
+
+/* =========================
+   RETURN
+========================= */
+
 #returnButton {
+
     position: absolute;
 
     right: 20px;
@@ -374,15 +438,24 @@ html, body {
     cursor: pointer;
 }
 
+
 #returnButton:hover {
+
     color: white;
 
     border-color: white;
 }
+
 </style>
 </head>
 
+
 <body>
+
+
+<!-- =========================
+     ГЛАВНЫЙ ЭКРАН
+========================= -->
 
 <div id="main">
 
@@ -397,16 +470,27 @@ html, body {
 </div>
 
 
+
+<!-- =========================
+     РАБОЧИЙ СТОЛ
+========================= -->
+
 <div id="desktop">
 
     <div class="desktop-header">
         SYSTEM / DESKTOP
     </div>
 
+
     <div class="icons">
 
 
-        <div class="icon" ondblclick="openFolder('unknown')">
+        <!-- ПАПКА -->
+
+        <div
+            class="icon"
+            ondblclick="openFolder('unknown')"
+        >
 
             <div class="icon-symbol"></div>
 
@@ -417,8 +501,12 @@ html, body {
         </div>
 
 
+        <!-- ПАПКА -->
 
-        <div class="icon" ondblclick="openFolder('archive')">
+        <div
+            class="icon"
+            ondblclick="openFolder('archive')"
+        >
 
             <div class="icon-symbol"></div>
 
@@ -429,6 +517,7 @@ html, body {
         </div>
 
 
+        <!-- ДОКУМЕНТ -->
 
         <div
             class="icon"
@@ -444,6 +533,7 @@ html, body {
         </div>
 
 
+        <!-- ДОКУМЕНТ -->
 
         <div
             class="icon"
@@ -459,6 +549,7 @@ html, body {
         </div>
 
 
+        <!-- ДОКУМЕНТ -->
 
         <div
             class="icon"
@@ -482,6 +573,12 @@ html, body {
 
 </div>
 
+
+
+<!-- =========================
+     ОКНО ДОКУМЕНТА
+========================= -->
+
 <div id="fileWindow">
 
     <div class="window-header">
@@ -496,25 +593,47 @@ html, body {
 
     </div>
 
+
     <div id="fileContent"></div>
 
 </div>
 
 
+
 <script>
+
+
+/* ==================================================
+   ТАЙМЕР
+================================================== */
 
 let now = new Date();
 
 let target = new Date(now);
 
+
+/* Находим ближайшую субботу */
+
 let days =
     (6 - now.getDay() + 7) % 7;
+
 
 target.setDate(
     now.getDate() + days
 );
 
+
+/* Ставим время 15:00 */
+
 target.setHours(15, 0, 0, 0);
+
+
+/*
+   Если сегодня суббота и 15:00
+   уже прошло — оставляем эту субботу.
+
+   Поэтому таймер будет идти в минус.
+*/
 
 
 function updateTimer() {
@@ -527,28 +646,40 @@ function updateTimer() {
 
     time = Math.abs(time);
 
+
     let d =
         Math.floor(time / 86400000);
+
 
     let h =
         Math.floor(time / 3600000) % 24;
 
+
     let m =
         Math.floor(time / 60000) % 60;
+
 
     let s =
         Math.floor(time / 1000) % 60;
 
 
     let result =
-        String(d).padStart(2, "0") + ":" +
-        String(h).padStart(2, "0") + ":" +
-        String(m).padStart(2, "0") + ":" +
+
+        String(d).padStart(2, "0") +
+        ":" +
+
+        String(h).padStart(2, "0") +
+        ":" +
+
+        String(m).padStart(2, "0") +
+        ":" +
+
         String(s).padStart(2, "0");
 
 
     document.getElementById("timer")
         .textContent =
+
         negative
             ? "-" + result
             : result;
@@ -557,103 +688,20 @@ function updateTimer() {
 
 updateTimer();
 
-setInterval(updateTimer, 1000);
+
+setInterval(
+    updateTimer,
+    1000
+);
 
 
-const messages = [
 
-    "",
-
-    "",
-
-    "",
-
-    "",
-
-    "",
-
-    "",
-
-    "",
-
-    "",
-
-    "",
-
-    ""
-
-];
-
-
-function createMessage() {
-
-    let message =
-        document.createElement("div");
-
-    message.className = "message";
-
-    message.textContent =
-        messages[
-            Math.floor(
-                Math.random() * messages.length
-            )
-        ];
-
-
-    message.style.left =
-        Math.random() * 80 + 10 + "%";
-
-    message.style.top =
-        Math.random() * 75 + 10 + "%";
-
-
-    document.getElementById("main")
-        .appendChild(message);
-
-
-    setTimeout(() => {
-
-        message.remove();
-
-    }, 5000);
-}
-
-
-/* Пять сообщений */
-
-function messageCycle() {
-
-    let count = 0;
-
-    function next() {
-
-        createMessage();
-
-        count++;
-
-        if (count < 5) {
-
-            setTimeout(
-                next,
-                1200 + Math.random() * 5000
-            );
-
-        } else {
-
-            setTimeout(
-                messageCycle,
-                5000
-            );
-
-        }
-    }
-
-    next();
-}
-
-messageCycle();
+/* ==================================================
+   ФАЙЛЫ
+================================================== */
 
 const files = {
+
 
     document1: {
 
@@ -662,7 +710,7 @@ const files = {
         content:
 `ПУСТО.
 
-Пусто`
+Пока здесь ничего нет.`
 
     },
 
@@ -674,7 +722,8 @@ const files = {
         content:
 `[ EMPTY ]
 
-Скрыто от вашего взора.
+Этот документ пока не содержит данных.`
+
     },
 
 
@@ -690,6 +739,12 @@ const files = {
     }
 
 };
+
+
+
+/* ==================================================
+   ОТКРЫТИЕ ФАЙЛА
+================================================== */
 
 function openFile(id) {
 
@@ -711,6 +766,11 @@ function openFile(id) {
 }
 
 
+
+/* ==================================================
+   ЗАКРЫТИЕ ФАЙЛА
+================================================== */
+
 document
     .getElementById("closeFile")
     .addEventListener("click", () => {
@@ -721,6 +781,12 @@ document
 
     });
 
+
+
+/* ==================================================
+   КРАСНАЯ КНОПКА
+================================================== */
+
 document
     .getElementById("redButton")
     .addEventListener("click", () => {
@@ -730,6 +796,12 @@ document
             .classList.add("active");
 
     });
+
+
+
+/* ==================================================
+   RETURN
+================================================== */
 
 document
     .getElementById("returnButton")
@@ -742,18 +814,31 @@ document
     });
 
 
-document.addEventListener("keydown", (event) => {
 
-    if (event.key === "Escape") {
+/* ==================================================
+   ESC
+================================================== */
 
-        document
-            .getElementById("fileWindow")
-            .classList.remove("active");
+document.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (event.key === "Escape") {
+
+            document
+                .getElementById("fileWindow")
+                .classList.remove("active");
+
+        }
 
     }
+);
 
-});
 
+
+/* ==================================================
+   ПАПКИ
+================================================== */
 
 function openFolder(folder) {
 
