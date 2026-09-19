@@ -7,736 +7,143 @@
 <title>...</title>
 
 <style>
-
-* {
-    box-sizing: border-box;
-}
-
 html, body {
     margin: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
-
     background: #000;
     color: #fff;
-
     font-family: monospace;
 }
 
-#main {
+body::after {
+    content: "";
     position: fixed;
     inset: 0;
-
-    background: #000;
-
-    overflow: hidden;
-}
-
-#main::after {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
     pointer-events: none;
-
-    background:
-        repeating-linear-gradient(
-            to bottom,
-            rgba(255,255,255,0.035) 0px,
-            rgba(255,255,255,0.035) 1px,
-            transparent 1px,
-            transparent 4px
-        );
-
-    z-index: 20;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.035) 0px,
+        rgba(255,255,255,0.035) 1px,
+        transparent 1px,
+        transparent 4px
+    );
 }
-
 
 .eye {
-    position: absolute;
-
+    position: fixed;
     width: 520px;
     height: 280px;
-
     left: 50%;
     top: 50%;
-
     transform: translate(-50%, -50%);
-
-    border: 3px solid rgba(255,255,255,0.08);
-
+    border: 3px solid rgba(255,255,255,0.07);
     border-radius: 50%;
-
-    opacity: 0.55;
 }
-
 
 .eye::before {
     content: "";
-
     position: absolute;
-
     width: 150px;
     height: 150px;
-
     left: 50%;
     top: 50%;
-
     transform: translate(-50%, -50%);
-
-    border: 3px solid rgba(255,255,255,0.08);
-
+    border: 3px solid rgba(255,255,255,0.07);
     border-radius: 50%;
 }
 
-
 .eye::after {
     content: "";
-
     position: absolute;
-
     width: 35px;
     height: 35px;
-
     left: 50%;
     top: 50%;
-
     transform: translate(-50%, -50%);
-
-    background: rgba(255,255,255,0.08);
-
+    background: rgba(255,255,255,0.07);
     border-radius: 50%;
 }
 
 #timer {
-
-    position: absolute;
-
+    position: fixed;
     left: 50%;
     top: 50%;
-
     transform: translate(-50%, -50%);
-
     font-size: clamp(35px, 7vw, 90px);
-
     white-space: nowrap;
-
-    text-shadow:
-        0 0 10px white,
-        0 0 30px rgba(255,255,255,0.5);
-
-    z-index: 5;
+    text-shadow: 0 0 10px white, 0 0 30px rgba(255,255,255,0.5);
+    z-index: 2;
 }
 
 #redButton {
-
     position: fixed;
-
     right: 25px;
     bottom: 25px;
-
     width: 55px;
     height: 55px;
-
-    background: #a00000;
-
-    border: 2px solid #ff0000;
-
     border-radius: 50%;
-
+    border: 2px solid red;
+    background: #900;
     cursor: pointer;
-
-    z-index: 100;
-
-    box-shadow:
-        0 0 10px #ff0000,
-        inset 0 0 10px #400000;
-
-    transition: 0.2s;
+    box-shadow: 0 0 15px red;
+    z-index: 5;
 }
-
 
 #redButton:hover {
-
-    background: #d00000;
-
-    box-shadow:
-        0 0 20px red,
-        0 0 40px rgba(255,0,0,0.5);
+    background: #d00;
 }
-
-
-#redButton:active {
-    transform: scale(0.9);
-}
-
-#desktop {
-
-    position: fixed;
-
-    inset: 0;
-
-    display: none;
-
-    background:
-        radial-gradient(
-            circle at center,
-            #171717 0%,
-            #050505 70%,
-            #000 100%
-        );
-
-    z-index: 200;
-}
-
-
-#desktop.active {
-    display: block;
-}
-
-
-.desktop-header {
-
-    height: 45px;
-
-    border-bottom: 1px solid #333;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 0 15px;
-
-    color: #aaa;
-
-    font-size: 14px;
-}
-
-.icons {
-
-    display: flex;
-
-    gap: 35px;
-
-    padding: 30px;
-}
-
-
-.icon {
-
-    width: 100px;
-
-    text-align: center;
-
-    cursor: pointer;
-
-    color: #aaa;
-
-    user-select: none;
-}
-
-
-.icon:hover {
-    color: white;
-}
-
-
-.icon-symbol {
-
-    width: 55px;
-    height: 45px;
-
-    margin: auto auto 8px;
-
-    background: #171717;
-
-    border: 1px solid #666;
-
-    position: relative;
-}
-
-
-.icon-symbol::before {
-
-    content: "";
-
-    position: absolute;
-
-    left: 7px;
-    top: 7px;
-
-    width: 20px;
-    height: 10px;
-
-    background: #555;
-}
-
-
-.icon-name {
-
-    font-size: 13px;
-
-    word-break: break-word;
-}
-
-#fileWindow {
-
-    position: absolute;
-
-    width: min(700px, 90vw);
-    height: min(500px, 75vh);
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-
-    background: #080808;
-
-    border: 1px solid #777;
-
-    box-shadow:
-        0 0 40px rgba(0,0,0,0.9);
-
-    display: none;
-
-    z-index: 300;
-}
-
-
-#fileWindow.active {
-    display: block;
-}
-
-
-.window-header {
-
-    height: 35px;
-
-    border-bottom: 1px solid #555;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding: 0 10px;
-
-    background: #151515;
-}
-
-
-#fileName {
-    color: #aaa;
-}
-
-
-#closeFile {
-
-    border: none;
-
-    background: transparent;
-
-    color: #aaa;
-
-    font-family: monospace;
-
-    cursor: pointer;
-
-    font-size: 18px;
-}
-
-
-#closeFile:hover {
-    color: red;
-}
-
-
-#fileContent {
-
-    padding: 20px;
-
-    white-space: pre-wrap;
-
-    color: #ccc;
-
-    line-height: 1.6;
-
-    overflow: auto;
-
-    height: calc(100% - 35px);
-}
-
-#returnButton {
-
-    position: absolute;
-
-    right: 20px;
-    bottom: 20px;
-
-    background: transparent;
-
-    color: #777;
-
-    border: 1px solid #444;
-
-    padding: 8px 15px;
-
-    font-family: monospace;
-
-    cursor: pointer;
-}
-
-
-#returnButton:hover {
-
-    color: white;
-
-    border-color: white;
-}
-
 </style>
 </head>
 
-
 <body>
 
+<div class="eye"></div>
 
-<div id="main">
+<div id="timer">00:00:00:00</div>
 
-    <div class="eye"></div>
-
-    <div id="timer">
-        00:00:00:00
-    </div>
-
-    <button id="redButton"></button>
-
-</div>
-
-
-<div id="desktop">
-
-    <div class="desktop-header">
-        SYSTEM / DESKTOP
-    </div>
-
-
-    <div class="icons">
-
-
-
-        <div
-            class="icon"
-            ondblclick="openFolder('unknown')"
-        >
-
-            <div class="icon-symbol"></div>
-
-            <div class="icon-name">
-                UNKNOWN
-            </div>
-
-        </div>
-
-
-
-        <div
-            class="icon"
-            ondblclick="openFolder('archive')"
-        >
-
-            <div class="icon-symbol"></div>
-
-            <div class="icon-name">
-                ARCHIVE
-            </div>
-
-        </div>
-
-
-
-        <div
-            class="icon"
-            ondblclick="openFile('document1')"
-        >
-
-            <div class="icon-symbol"></div>
-
-            <div class="icon-name">
-                document.txt
-            </div>
-
-        </div>
-
-
-
-        <div
-            class="icon"
-            ondblclick="openFile('document2')"
-        >
-
-            <div class="icon-symbol"></div>
-
-            <div class="icon-name">
-                note.txt
-            </div>
-
-        </div>
-
-
-
-        <div
-            class="icon"
-            ondblclick="openFile('document3')"
-        >
-
-            <div class="icon-symbol"></div>
-
-            <div class="icon-name">
-                unknown.txt
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <button id="returnButton">
-        RETURN
-    </button>
-
-</div>
-
-
-<div id="fileWindow">
-
-    <div class="window-header">
-
-        <span id="fileName">
-            document.txt
-        </span>
-
-        <button id="closeFile">
-            ×
-        </button>
-
-    </div>
-
-
-    <div id="fileContent"></div>
-
-</div>
-
-
+<button id="redButton"></button>
 
 <script>
+const timer = document.getElementById("timer");
 
+const now = new Date();
+const target = new Date(now);
 
-let now = new Date();
+let days = (6 - now.getDay() + 7) % 7;
 
-let target = new Date(now);
-
-
-
-let days =
-    (6 - now.getDay() + 7) % 7;
-
-
-target.setDate(
-    now.getDate() + days
-);
-
-
-
+target.setDate(now.getDate() + days);
 target.setHours(15, 0, 0, 0);
 
+function update() {
+    const current = new Date();
+    let difference = target - current;
 
+    const negative = difference < 0;
 
-function updateTimer() {
+    difference = Math.abs(difference);
 
-    let current = new Date();
+    const days = Math.floor(difference / 86400000);
+    const hours = Math.floor(difference / 3600000) % 24;
+    const minutes = Math.floor(difference / 60000) % 60;
+    const seconds = Math.floor(difference / 1000) % 60;
 
-    let time = target - current;
+    const result =
+        String(days).padStart(2, "0") + ":" +
+        String(hours).padStart(2, "0") + ":" +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
 
-    let negative = time < 0;
-
-    time = Math.abs(time);
-
-
-    let d =
-        Math.floor(time / 86400000);
-
-
-    let h =
-        Math.floor(time / 3600000) % 24;
-
-
-    let m =
-        Math.floor(time / 60000) % 60;
-
-
-    let s =
-        Math.floor(time / 1000) % 60;
-
-
-    let result =
-
-        String(d).padStart(2, "0") +
-        ":" +
-
-        String(h).padStart(2, "0") +
-        ":" +
-
-        String(m).padStart(2, "0") +
-        ":" +
-
-        String(s).padStart(2, "0");
-
-
-    document.getElementById("timer")
-        .textContent =
-
-        negative
-            ? "-" + result
-            : result;
+    timer.textContent = negative ? "-" + result : result;
 }
 
+update();
+setInterval(update, 1000);
 
-updateTimer();
-
-
-setInterval(
-    updateTimer,
-    1000
-);
-
-
-const files = {
-
-
-    document1: {
-
-        name: "document.txt",
-
-        content:
-`ПУСТО.
-
-Пока здесь ничего нет.`
-
-    },
-
-
-    document2: {
-
-        name: "note.txt",
-
-        content:
-`[ EMPTY ]
-
-Этот документ пока не содержит данных.`
-
-    },
-
-
-    document3: {
-
-        name: "unknown.txt",
-
-        content:
-`??????????????????
-
-ФАЙЛ ПУСТ.`
-
-    }
-
+document.getElementById("redButton").onclick = function() {
+    alert("SYSTEM");
 };
-
-
-function openFile(id) {
-
-    let file = files[id];
-
-    if (!file) return;
-
-
-    document.getElementById("fileName")
-        .textContent = file.name;
-
-
-    document.getElementById("fileContent")
-        .textContent = file.content;
-
-
-    document.getElementById("fileWindow")
-        .classList.add("active");
-}
-
-
-
-document
-    .getElementById("closeFile")
-    .addEventListener("click", () => {
-
-        document
-            .getElementById("fileWindow")
-            .classList.remove("active");
-
-    });
-
-
-document
-    .getElementById("redButton")
-    .addEventListener("click", () => {
-
-        document
-            .getElementById("desktop")
-            .classList.add("active");
-
-    });
-
-
-document
-    .getElementById("returnButton")
-    .addEventListener("click", () => {
-
-        document
-            .getElementById("desktop")
-            .classList.remove("active");
-
-    });
-
-
-document.addEventListener(
-    "keydown",
-    (event) => {
-
-        if (event.key === "Escape") {
-
-            document
-                .getElementById("fileWindow")
-                .classList.remove("active");
-
-        }
-
-    }
-);
-
-
-
-function openFolder(folder) {
-
-    alert(
-        "Папка \"" +
-        folder.toUpperCase() +
-        "\" пока пуста."
-    );
-
-}
-
 </script>
 
 </body>
