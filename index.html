@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -94,6 +95,99 @@ body::after {
 #redButton:hover {
     background: #d00;
 }
+
+/* РАБОЧИЙ СТОЛ */
+
+#desktop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #050505;
+    z-index: 10;
+}
+
+.desktop-title {
+    position: absolute;
+    top: 20px;
+    left: 25px;
+    font-size: 18px;
+    opacity: 0.7;
+}
+
+.folder-area {
+    position: absolute;
+    top: 70px;
+    left: 25px;
+    display: flex;
+    gap: 35px;
+}
+
+.folder {
+    width: 80px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.folder-icon {
+    width: 55px;
+    height: 42px;
+    margin: auto;
+    background: #777;
+    border: 2px solid #aaa;
+    position: relative;
+}
+
+.folder-icon::before {
+    content: "";
+    position: absolute;
+    width: 25px;
+    height: 8px;
+    top: -10px;
+    left: -2px;
+    background: #777;
+    border: 2px solid #aaa;
+    border-bottom: none;
+}
+
+.folder:hover .folder-icon {
+    background: #aaa;
+}
+
+.folder-name {
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+#closeDesktop {
+    position: absolute;
+    right: 25px;
+    top: 20px;
+    width: 35px;
+    height: 35px;
+    background: transparent;
+    color: white;
+    border: 1px solid #777;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 18px;
+}
+
+#closeDesktop:hover {
+    background: #222;
+}
+
+#emptyMessage {
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #555;
+    padding: 20px 30px;
+    background: #080808;
+    color: #aaa;
+}
 </style>
 </head>
 
@@ -104,6 +198,44 @@ body::after {
 <div id="timer">00:00:00:00</div>
 
 <button id="redButton"></button>
+
+<div id="desktop">
+
+    <div class="desktop-title">
+        SYSTEM / DESKTOP
+    </div>
+
+    <button id="closeDesktop">×</button>
+
+    <div class="folder-area">
+
+        <div class="folder" data-folder="ARCHIVE">
+            <div class="folder-icon"></div>
+            <div class="folder-name">ARCHIVE</div>
+        </div>
+
+        <div class="folder" data-folder="DATA">
+            <div class="folder-icon"></div>
+            <div class="folder-name">DATA</div>
+        </div>
+
+        <div class="folder" data-folder="SYSTEM">
+            <div class="folder-icon"></div>
+            <div class="folder-name">SYSTEM</div>
+        </div>
+
+        <div class="folder" data-folder="UNKNOWN">
+            <div class="folder-icon"></div>
+            <div class="folder-name">UNKNOWN</div>
+        </div>
+
+    </div>
+
+    <div id="emptyMessage">
+        ПАПКА ПУСТА
+    </div>
+
+</div>
 
 <script>
 const timer = document.getElementById("timer");
@@ -141,10 +273,44 @@ function update() {
 update();
 setInterval(update, 1000);
 
-document.getElementById("redButton").onclick = function() {
-    alert("SYSTEM");
+
+// ОТКРЫТИЕ РАБОЧЕГО СТОЛА
+
+const redButton = document.getElementById("redButton");
+const desktop = document.getElementById("desktop");
+const closeDesktop = document.getElementById("closeDesktop");
+
+redButton.onclick = function() {
+    desktop.style.display = "block";
 };
+
+closeDesktop.onclick = function() {
+    desktop.style.display = "none";
+};
+
+
+// ПАПКИ
+
+const folders = document.querySelectorAll(".folder");
+const emptyMessage = document.getElementById("emptyMessage");
+
+folders.forEach(function(folder) {
+
+    folder.onclick = function() {
+
+        emptyMessage.textContent =
+            "ПАПКА " + folder.dataset.folder + " ПУСТА";
+
+        emptyMessage.style.display = "block";
+
+        setTimeout(function() {
+            emptyMessage.style.display = "none";
+        }, 1500);
+    };
+
+});
 </script>
 
 </body>
 </html>
+```
