@@ -7,7 +7,6 @@
 <title>...</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -16,49 +15,52 @@ html, body {
     margin: 0;
     width: 100%;
     height: 100%;
-    background: #000;
-    color: white;
     overflow: hidden;
+    background: #000;
+    color: #fff;
     font-family: monospace;
 }
 
-
-.screen {
+#main {
     position: fixed;
-
     inset: 0;
-
+    background: #000;
     overflow: hidden;
+}
+
+
+#main::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
 
     background:
-        radial-gradient(
-            circle at center,
-            #111 0%,
-            #030303 65%,
-            #000 100%
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.035) 0px,
+            rgba(255,255,255,0.035) 1px,
+            transparent 1px,
+            transparent 4px
         );
+
+    z-index: 20;
 }
 
 .eye {
     position: absolute;
+    width: 520px;
+    height: 280px;
 
     left: 50%;
     top: 50%;
 
-    transform:
-        translate(-50%, -50%)
-        rotate(-3deg);
+    transform: translate(-50%, -50%);
 
-    width: 380px;
-    height: 210px;
+    border: 3px solid rgba(255,255,255,0.08);
+    border-radius: 50%;
 
-    border: 5px solid rgba(255,255,255,.08);
-
-    border-radius: 70% 0;
-
-    opacity: .25;
-
-    z-index: 1;
+    opacity: 0.55;
 }
 
 .eye::before {
@@ -66,15 +68,15 @@ html, body {
 
     position: absolute;
 
-    width: 125px;
-    height: 125px;
+    width: 150px;
+    height: 150px;
 
     left: 50%;
     top: 50%;
 
     transform: translate(-50%, -50%);
 
-    border: 4px solid rgba(255,255,255,.12);
+    border: 3px solid rgba(255,255,255,0.08);
 
     border-radius: 50%;
 }
@@ -92,7 +94,7 @@ html, body {
 
     transform: translate(-50%, -50%);
 
-    background: rgba(255,255,255,.12);
+    background: rgba(255,255,255,0.08);
 
     border-radius: 50%;
 }
@@ -105,179 +107,411 @@ html, body {
 
     transform: translate(-50%, -50%);
 
-    color: white;
+    font-size: clamp(35px, 7vw, 90px);
 
-    font-size: clamp(32px, 7vw, 80px);
+    white-space: nowrap;
 
     text-shadow:
         0 0 10px white,
-        0 0 25px rgba(255,255,255,.4);
+        0 0 30px rgba(255,255,255,0.5);
 
     z-index: 5;
-
-    white-space: nowrap;
 }
 
 .message {
     position: absolute;
 
-    color: rgba(255,255,255,.75);
+    color: rgba(255,255,255,0.7);
 
-    font-size: 13px;
-
-    letter-spacing: 3px;
-
-    opacity: 0;
-
-    z-index: 8;
+    font-size: 14px;
 
     pointer-events: none;
 
-    text-shadow:
-        0 0 7px white;
+    z-index: 6;
 
-    transition: opacity .2s;
+    animation: appear 0.3s ease;
 }
 
-.message.show {
-    opacity: 1;
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
-.red-button {
+#redButton {
     position: fixed;
 
-    right: 2%;
-    bottom: 1.5%;
+    right: 25px;
+    bottom: 25px;
 
-    width: 90px;
-    height: 45px;
+    width: 55px;
+    height: 55px;
 
-    background: #220000;
+    background: #a00000;
 
-    border: 3px solid #550000;
+    border: 2px solid #ff0000;
 
-    border-radius: 5px;
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    z-index: 100;
 
     box-shadow:
-        0 0 12px rgba(255,0,0,.15),
-        inset 0 0 10px #000;
+        0 0 10px #ff0000,
+        inset 0 0 10px #400000;
 
-    cursor: default;
-
-    opacity: .75;
-
-    z-index: 30;
+    transition: 0.2s;
 }
 
-.red-button::before {
+#redButton:hover {
+    background: #d00000;
+
+    box-shadow:
+        0 0 20px red,
+        0 0 40px rgba(255,0,0,0.5);
+}
+
+#redButton:active {
+    transform: scale(0.9);
+}
+
+#desktop {
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #171717 0%,
+            #050505 70%,
+            #000 100%
+        );
+
+    z-index: 200;
+}
+
+#desktop.active {
+    display: block;
+}
+
+
+.desktop-header {
+    height: 45px;
+
+    border-bottom: 1px solid #333;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 15px;
+
+    color: #aaa;
+
+    font-size: 14px;
+}
+
+
+.icons {
+    display: flex;
+
+    gap: 35px;
+
+    padding: 30px;
+}
+
+.icon {
+    width: 100px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    color: #aaa;
+
+    user-select: none;
+}
+
+.icon:hover {
+    color: white;
+}
+
+.icon-symbol {
+    width: 55px;
+    height: 45px;
+
+    margin: auto auto 8px;
+
+    background: #171717;
+
+    border: 1px solid #666;
+
+    position: relative;
+}
+
+.icon-symbol::before {
     content: "";
 
     position: absolute;
+
+    left: 7px;
+    top: 7px;
+
+    width: 20px;
+    height: 10px;
+
+    background: #555;
+}
+
+.icon-name {
+    font-size: 13px;
+
+    word-break: break-word;
+}
+
+#fileWindow {
+    position: absolute;
+
+    width: min(700px, 90vw);
+    height: min(500px, 75vh);
 
     left: 50%;
     top: 50%;
 
     transform: translate(-50%, -50%);
 
-    width: 45px;
-    height: 18px;
+    background: #080808;
 
-    background: #350000;
-
-    border-radius: 3px;
+    border: 1px solid #777;
 
     box-shadow:
-        inset 0 0 8px #000;
+        0 0 40px rgba(0,0,0,0.9);
+
+    display: none;
+
+    z-index: 300;
 }
 
-.scanlines {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 20;
-
-    pointer-events: none;
-
-    background:
-        repeating-linear-gradient(
-            to bottom,
-            rgba(255,255,255,.035) 0px,
-            rgba(255,255,255,.035) 1px,
-            transparent 1px,
-            transparent 4px
-        );
+#fileWindow.active {
+    display: block;
 }
 
-.screen::after {
-    content: "";
+.window-header {
+    height: 35px;
 
+    border-bottom: 1px solid #555;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 10px;
+
+    background: #151515;
+}
+
+#fileName {
+    color: #aaa;
+}
+
+#closeFile {
+    border: none;
+
+    background: transparent;
+
+    color: #aaa;
+
+    font-family: monospace;
+
+    cursor: pointer;
+
+    font-size: 18px;
+}
+
+#closeFile:hover {
+    color: red;
+}
+
+#fileContent {
+    padding: 20px;
+
+    white-space: pre-wrap;
+
+    color: #ccc;
+
+    line-height: 1.6;
+
+    overflow: auto;
+
+    height: calc(100% - 35px);
+}
+
+#returnButton {
     position: absolute;
 
-    inset: 0;
+    right: 20px;
+    bottom: 20px;
 
-    pointer-events: none;
+    background: transparent;
 
-    background: rgba(255,255,255,.01);
+    color: #777;
 
-    animation: flicker .15s infinite;
+    border: 1px solid #444;
 
-    z-index: 19;
+    padding: 8px 15px;
+
+    font-family: monospace;
+
+    cursor: pointer;
 }
 
-@keyframes flicker {
+#returnButton:hover {
+    color: white;
 
-    0% {
-        opacity: .2;
-    }
-
-    50% {
-        opacity: .05;
-    }
-
-    100% {
-        opacity: .15;
-    }
-
+    border-color: white;
 }
-
 </style>
 </head>
 
-
 <body>
 
-<div class="screen">
-
+<div id="main">
 
     <div class="eye"></div>
-
 
     <div id="timer">
         00:00:00:00
     </div>
 
-
-
-    <div class="scanlines"></div>
+    <button id="redButton"></button>
 
 </div>
 
 
+<div id="desktop">
 
-<div class="red-button"></div>
+    <div class="desktop-header">
+        SYSTEM / DESKTOP
+    </div>
+
+    <div class="icons">
+
+
+        <div class="icon" ondblclick="openFolder('unknown')">
+
+            <div class="icon-symbol"></div>
+
+            <div class="icon-name">
+                UNKNOWN
+            </div>
+
+        </div>
+
+
+
+        <div class="icon" ondblclick="openFolder('archive')">
+
+            <div class="icon-symbol"></div>
+
+            <div class="icon-name">
+                ARCHIVE
+            </div>
+
+        </div>
+
+
+
+        <div
+            class="icon"
+            ondblclick="openFile('document1')"
+        >
+
+            <div class="icon-symbol"></div>
+
+            <div class="icon-name">
+                document.txt
+            </div>
+
+        </div>
+
+
+
+        <div
+            class="icon"
+            ondblclick="openFile('document2')"
+        >
+
+            <div class="icon-symbol"></div>
+
+            <div class="icon-name">
+                note.txt
+            </div>
+
+        </div>
+
+
+
+        <div
+            class="icon"
+            ondblclick="openFile('document3')"
+        >
+
+            <div class="icon-symbol"></div>
+
+            <div class="icon-name">
+                unknown.txt
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <button id="returnButton">
+        RETURN
+    </button>
+
+</div>
+
+<div id="fileWindow">
+
+    <div class="window-header">
+
+        <span id="fileName">
+            document.txt
+        </span>
+
+        <button id="closeFile">
+            ×
+        </button>
+
+    </div>
+
+    <div id="fileContent"></div>
+
+</div>
 
 
 <script>
 
-const target = new Date();
-const current = new Date();
+let now = new Date();
 
-const daysUntilSaturday =
-    (6 - current.getDay() + 7) % 7;
+let target = new Date(now);
+
+let days =
+    (6 - now.getDay() + 7) % 7;
 
 target.setDate(
-    current.getDate() + daysUntilSaturday
+    now.getDate() + days
 );
 
 target.setHours(15, 0, 0, 0);
@@ -285,54 +519,39 @@ target.setHours(15, 0, 0, 0);
 
 function updateTimer() {
 
-    const now = new Date();
+    let current = new Date();
 
-    let difference =
-        target.getTime() - now.getTime();
+    let time = target - current;
 
-    const negative =
-        difference < 0;
+    let negative = time < 0;
 
-    difference =
-        Math.abs(difference);
+    time = Math.abs(time);
 
+    let d =
+        Math.floor(time / 86400000);
 
-    const days =
-        Math.floor(
-            difference / 86400000
-        );
+    let h =
+        Math.floor(time / 3600000) % 24;
 
+    let m =
+        Math.floor(time / 60000) % 60;
 
-    const hours =
-        Math.floor(
-            difference / 3600000
-        ) % 24;
+    let s =
+        Math.floor(time / 1000) % 60;
 
 
-    const minutes =
-        Math.floor(
-            difference / 60000
-        ) % 60;
-
-
-    const seconds =
-        Math.floor(
-            difference / 1000
-        ) % 60;
-
-
-    const result =
-        String(days).padStart(2, "0") + ":" +
-        String(hours).padStart(2, "0") + ":" +
-        String(minutes).padStart(2, "0") + ":" +
-        String(seconds).padStart(2, "0");
+    let result =
+        String(d).padStart(2, "0") + ":" +
+        String(h).padStart(2, "0") + ":" +
+        String(m).padStart(2, "0") + ":" +
+        String(s).padStart(2, "0");
 
 
     document.getElementById("timer")
         .textContent =
         negative
-        ? "-" + result
-        : result;
+            ? "-" + result
+            : result;
 }
 
 
@@ -340,124 +559,211 @@ updateTimer();
 
 setInterval(updateTimer, 1000);
 
+
 const messages = [
 
-    "0JfQsNC80LAg0YLQtdC80L3QvtC1",
+    "",
 
-    "0KLQtdC60YIg0L7QstC+0YDQvtCy",
+    "",
 
-    "0J3QsNC/INCQ0YHQv9Cw",
+    "",
 
-    "0J7QutC+INCQ0YHQv9Cw0Y8=",
+    "",
 
-    "0KLQtdC60YIg0Lgg0YLQtdC80L3QvtC1",
+    "",
 
-    "0JrQotCeINCj0JbQlSDQndCQ0KfQkNCb",
+    "",
 
-    "0JjQqdCYINCU0JDQm9Cs0KjQlQ==",
+    "",
 
-    "0KHQm9CY0KjQmtCe0Jwg0J/QntCX0JTQ"
+    "",
+
+    "",
+
+    ""
 
 ];
 
 
-function showMessage(text) {
+function createMessage() {
 
-    const message =
+    let message =
         document.createElement("div");
 
-    message.className =
-        "message";
+    message.className = "message";
 
     message.textContent =
-        text;
+        messages[
+            Math.floor(
+                Math.random() * messages.length
+            )
+        ];
 
 
     message.style.left =
-        (5 + Math.random() * 90) + "%";
-
+        Math.random() * 80 + 10 + "%";
 
     message.style.top =
-        (5 + Math.random() * 90) + "%";
+        Math.random() * 75 + 10 + "%";
 
 
-    document.querySelector(".screen")
+    document.getElementById("main")
         .appendChild(message);
-
-
-    requestAnimationFrame(() => {
-
-        message.classList.add("show");
-
-    });
 
 
     setTimeout(() => {
 
-        message.classList.remove("show");
+        message.remove();
 
-        setTimeout(() => {
-
-            message.remove();
-
-        }, 300);
-
-    }, 1800 + Math.random() * 2500);
+    }, 5000);
 }
 
-function startMessages() {
 
-    const shuffled =
-        [...messages]
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 5);
+/* Пять сообщений */
 
+function messageCycle() {
 
-    let index = 0;
-
+    let count = 0;
 
     function next() {
 
-        if (index >= shuffled.length) {
+        createMessage();
+
+        count++;
+
+        if (count < 5) {
 
             setTimeout(
-                startMessages,
+                next,
+                1200 + Math.random() * 5000
+            );
+
+        } else {
+
+            setTimeout(
+                messageCycle,
                 5000
             );
 
-            return;
         }
-
-
-        showMessage(
-            shuffled[index]
-        );
-
-
-        index++;
-
-
-        const delay =
-            1200 +
-            Math.random() * 5000;
-
-
-        setTimeout(
-            next,
-            delay
-        );
-
     }
-
 
     next();
 }
 
+messageCycle();
 
-setTimeout(
-    startMessages,
-    3000
-);
+const files = {
+
+    document1: {
+
+        name: "document.txt",
+
+        content:
+`ПУСТО.
+
+Пусто`
+
+    },
+
+
+    document2: {
+
+        name: "note.txt",
+
+        content:
+`[ EMPTY ]
+
+Скрыто от вашего взора.
+    },
+
+
+    document3: {
+
+        name: "unknown.txt",
+
+        content:
+`??????????????????
+
+ФАЙЛ ПУСТ.`
+
+    }
+
+};
+
+function openFile(id) {
+
+    let file = files[id];
+
+    if (!file) return;
+
+
+    document.getElementById("fileName")
+        .textContent = file.name;
+
+
+    document.getElementById("fileContent")
+        .textContent = file.content;
+
+
+    document.getElementById("fileWindow")
+        .classList.add("active");
+}
+
+
+document
+    .getElementById("closeFile")
+    .addEventListener("click", () => {
+
+        document
+            .getElementById("fileWindow")
+            .classList.remove("active");
+
+    });
+
+document
+    .getElementById("redButton")
+    .addEventListener("click", () => {
+
+        document
+            .getElementById("desktop")
+            .classList.add("active");
+
+    });
+
+document
+    .getElementById("returnButton")
+    .addEventListener("click", () => {
+
+        document
+            .getElementById("desktop")
+            .classList.remove("active");
+
+    });
+
+
+document.addEventListener("keydown", (event) => {
+
+    if (event.key === "Escape") {
+
+        document
+            .getElementById("fileWindow")
+            .classList.remove("active");
+
+    }
+
+});
+
+
+function openFolder(folder) {
+
+    alert(
+        "Папка \"" +
+        folder.toUpperCase() +
+        "\" пока пуста."
+    );
+
+}
 
 </script>
 
